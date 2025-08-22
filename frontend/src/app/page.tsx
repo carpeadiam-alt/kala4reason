@@ -1,7 +1,8 @@
+"use client"
 import React, { useState } from 'react';
 
 export default function KalarasaLanding() {
-  const [hoveredCategory, setHoveredCategory] = useState(null);
+  const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-300 via-lime-300 to-yellow-200 overflow-hidden relative">
