@@ -107,9 +107,14 @@ function AuthPageContent() {
 
       console.log(`${isSignup ? 'Signup' : 'Login'} successful:`, data);
       router.push('/home');
-    } catch (error: any) {
-      console.error(`${isSignup ? 'Signup' : 'Login'} error:`, error);
-      setError(error.message || `Failed to ${isSignup ? 'sign up' : 'sign in'}`);
+    } catch (error: unknown) {  // ✅ Use 'unknown' instead of 'any'
+        if (error instanceof Error) {
+          console.error(`${isSignup ? 'Signup' : 'Login'} error:`, error);
+          setError(error.message);
+        } else {
+          console.error(`${isSignup ? 'Signup' : 'Login'} error:`, error);
+          setError(`Failed to ${isSignup ? 'sign up' : 'sign in'}`);
+        }
     } finally {
       setIsLoading(false);
     }
