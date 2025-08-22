@@ -192,9 +192,14 @@ function AuthPageContent() {
       console.log('Google user signed up successfully');
       router.push('/home');
       
-    } catch (error: any) {
-      console.error('Google authentication error:', error);
-      setError(error.message || 'Failed to authenticate with Google');
+    } catch (error: unknown) {
+        console.error('Google authentication error:', error);
+
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError('Failed to authenticate with Google');
+        }
     } finally {
       setIsLoading(false);
     }
