@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Inter, Instrument_Sans, Instrument_Serif } from 'next/font/google';
+//import Link from "next/link";
 
 const inter = Inter({ subsets: ['latin'] });
 const instrumentSans = Instrument_Sans({ subsets: ['latin'] });
@@ -20,14 +21,21 @@ export default function KalarasaLanding() {
       {/* Header */}
       <header className="flex justify-end items-center p-6 relative z-10">
         <div className="space-x-4">
-          <button className="px-4 py-2 text-black hover:text-red-700 transition-colors duration-300 font-medium">
+          <a
+            href="/login"
+            className="px-4 py-2 text-black hover:text-red-700 transition-colors duration-300 font-medium"
+          >
             Login
-          </button>
-          <button className="px-6 py-2 text-black hover:text-red-700 transition-colors duration-300 font-medium">
+          </a>
+          <a
+            href="/login"
+            className="px-6 py-2 text-black hover:text-red-700 transition-colors duration-300 font-medium"
+          >
             Signup
-          </button>
+          </a>
         </div>
       </header>
+
 
       <div className="flex items-center min-h-[calc(100vh-100px)] px-15">
         {/* Left Content */}

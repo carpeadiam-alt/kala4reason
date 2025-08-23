@@ -1,32 +1,56 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { User, Edit2, Save, X, Phone, Mail, MapPin } from "lucide-react";
 import Image from "next/image";
 
 const API_BASE_URL = "https://thecodeworks.in/kalarasa";
 
+// Define proper interfaces
+interface UserProfile {
+  email: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  age: string;
+  state: string;
+  address: string;
+}
+
+interface ApiResponse {
+  user: UserProfile;
+  error?: string;
+}
+
 function ProfilePage() {
-  const [profileData, setProfileData] = useState<any>(null);
+  const [profileData, setProfileData] = useState<UserProfile | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [editedData, setEditedData] = useState<any>({});
+  const [editedData, setEditedData] = useState<UserProfile>({
+    email: '',
+    first_name: '',
+    last_name: '',
+    phone: '',
+    age: '',
+    state: '',
+    address: ''
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Get logged-in user email from localStorage
-  const getUserEmail = () => {
+  const getUserEmail = (): string | null => {
     try {
       const userStr = localStorage.getItem("user");
       if (!userStr) return null;
-      const user = JSON.parse(userStr);
+      const user = JSON.parse(userStr) as { email?: string };
       return user.email || null;
     } catch {
       return null;
     }
   };
 
-  // Fetch profile data
-  const fetchProfileData = async () => {
+  // Fetch profile data - wrapped in useCallback to fix dependency warning
+  const fetchProfileData = useCallback(async () => {
     setIsLoading(true);
     setError("");
 
@@ -44,7 +68,7 @@ function ProfilePage() {
         body: JSON.stringify({ email }),
       });
 
-      const data = await response.json();
+      const data = await response.json() as ApiResponse;
 
       if (!response.ok || data.error) {
         throw new Error(data.error || "Failed to fetch profile");
@@ -52,13 +76,14 @@ function ProfilePage() {
 
       setProfileData(data.user);
       setEditedData(data.user);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error fetching profile:", err);
-      setError(err.message || "Failed to load profile data");
+      const errorMessage = err instanceof Error ? err.message : "Failed to load profile data";
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []); // Empty dependency array since getUserEmail is defined inside and doesn't depend on external state
 
   // Update profile data
   const updateProfileData = async () => {
@@ -88,7 +113,7 @@ function ProfilePage() {
         }),
       });
 
-      const data = await response.json();
+      const data = await response.json() as { error?: string };
 
       if (!response.ok || data.error) {
         throw new Error(data.error || "Failed to update profile");
@@ -99,9 +124,10 @@ function ProfilePage() {
       setSaveSuccess(true);
 
       setTimeout(() => setSaveSuccess(false), 3000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Error updating profile:", err);
-      setError(err.message || "Failed to update profile");
+      const errorMessage = err instanceof Error ? err.message : "Failed to update profile";
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -109,14 +135,16 @@ function ProfilePage() {
 
   useEffect(() => {
     fetchProfileData();
-  }, []);
+  }, [fetchProfileData]);
 
-  const handleInputChange = (field: keyof typeof editedData, value: string) => {
-    setEditedData((prev: any) => ({ ...prev, [field]: value }));
+  const handleInputChange = (field: keyof UserProfile, value: string) => {
+    setEditedData((prev: UserProfile) => ({ ...prev, [field]: value }));
   };
 
   const handleCancelEdit = () => {
-    setEditedData(profileData);
+    if (profileData) {
+      setEditedData(profileData);
+    }
     setIsEditing(false);
     setError("");
   };
@@ -146,6 +174,7 @@ function ProfilePage() {
       </div>
     );
   }
+  
   if (!profileData) {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-600">
@@ -153,6 +182,7 @@ function ProfilePage() {
       </div>
     );
   }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-200 via-yellow-100 to-green-100" style={{ backgroundColor: "#ECFF72" }}>
       {/* Header */}

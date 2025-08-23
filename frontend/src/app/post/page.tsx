@@ -25,9 +25,17 @@ function Group3() {
 
 function Logo() {
   return (
-    <div className="absolute top-0 left-[25px] h-[120px] w-[140px]">
-      <img src="/logo.svg" alt="Kalarasa Logo" className="block size-full" />
+    <div className="absolute top-0 left-[25px] h-[120px] flex items-center">
+      <div className="w-[75px] h-[64px] mr-4">
+        <img src="/left.svg" alt="Kalarasa Logo" className="block size-full" />
+      </div>
+
+      {/* Kalarasa Text */}
+      <div className="font-sans text-[33.75px] text-black">
+        <p className="leading-normal">Kalarasa</p>
+      </div>
     </div>
+
   );
 }
 
@@ -119,111 +127,139 @@ export default function CreatePage() {
   };
 
   return (
-    <div className="bg-[#ffffff] relative w-full h-screen overflow-hidden" data-name="MacBook Pro 16' - 3">
-      <Group5 />
-      <Group10 />
-      
-      <div className="absolute bg-[#a2ff9c] h-[80px] left-0 top-[95px] w-full" />
-      
-      <div className="absolute font-['Inter'] font-normal text-[#000000] text-[28px] left-[52px] top-[185px]">
-        <p>Create a Post</p>
-      </div>
-
-      {/* Email Input */}
-      <div className="absolute contents left-[52px] top-[235px]">
-        <div className="absolute bg-[#f4f3f3] h-[45px] left-[52px] rounded-[5px] top-[235px] w-[900px]">
-          <div aria-hidden="true" className="absolute border border-[#000000] border-solid inset-0 pointer-events-none rounded-[5px]" />
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            placeholder="Email (Creator)"
-            className="absolute bg-transparent h-full w-full px-4 font-['Inter'] font-normal text-[18px] text-[#000000] outline-none rounded-[5px] placeholder:text-[#666666]"
-          />
-        </div>
-      </div>
-
-      {/* Title Input */}
-      <div className="absolute contents left-[52px] top-[290px]">
-        <div className="absolute bg-[#f4f3f3] h-[45px] left-[52px] rounded-[5px] top-[290px] w-[900px]">
-          <div aria-hidden="true" className="absolute border border-[#000000] border-solid inset-0 pointer-events-none rounded-[5px]" />
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleInputChange}
-            placeholder="Title"
-            className="absolute bg-transparent h-full w-full px-4 font-['Inter'] font-normal text-[18px] text-[#000000] outline-none rounded-[5px] placeholder:text-[#666666]"
-          />
-        </div>
-      </div>
-
-      {/* Description Textarea */}
-      <div className="absolute contents left-[52px] top-[345px]">
-        <div className="absolute bg-[#f4f3f3] h-[80px] left-[52px] rounded-[5px] top-[345px] w-[900px]">
-          <div aria-hidden="true" className="absolute border border-[#000000] border-solid inset-0 pointer-events-none rounded-[5px]" />
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-            placeholder="Description"
-            className="absolute bg-transparent h-full w-full p-4 font-['Inter'] font-normal text-[18px] text-[#000000] outline-none rounded-[5px] resize-none placeholder:text-[#666666]"
-          />
-        </div>
-      </div>
-
-      {/* Tags Input */}
-      <div className="absolute contents left-[52px] top-[435px]">
-        <div className="absolute bg-[#f4f3f3] h-[45px] left-[52px] rounded-[5px] top-[435px] w-[900px]">
-          <div aria-hidden="true" className="absolute border border-[#000000] border-solid inset-0 pointer-events-none rounded-[5px]" />
-          <input
-            type="text"
-            name="tags"
-            value={formData.tags}
-            onChange={handleInputChange}
-            placeholder="Tags (comma separated)"
-            className="absolute bg-transparent h-full w-full px-4 font-['Inter'] font-normal text-[18px] text-[#000000] outline-none rounded-[5px] placeholder:text-[#666666]"
-          />
-        </div>
-      </div>
-
-      {/* Upload Section */}
-      <div className="absolute bg-[#ffffff] h-[180px] left-[52px] top-[490px] w-[450px]">
-        <div aria-hidden="true" className="absolute border border-[#000000] border-dashed inset-[-0.5px] pointer-events-none" />
-        <input
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={handleFileChange}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-        />
-        <div className="absolute bg-[#f4f3f3] h-28 left-[25px] top-[28px] w-[400px]">
-          <div aria-hidden="true" className="absolute border border-[#000000] border-solid inset-0 pointer-events-none" />
-        </div>
-        <div className="absolute font-['Inter'] font-normal leading-[0] left-[225px] not-italic text-[#444444] text-[16px] text-center top-[6px] translate-x-[-50%]">
-          <p className="leading-[normal]">Uploads</p>
-        </div>
-        <div className="absolute font-['Inter'] font-normal leading-[0] left-[225px] not-italic text-[#000000] text-[50px] text-center text-nowrap top-[50px] translate-x-[-50%]">
-          <p className="leading-[normal] whitespace-pre">+</p>
-        </div>
-        {images && (
-          <div className="absolute bottom-2 left-2 right-2 text-xs text-gray-600 font-['Inter']">
-            {images.length} file{images.length !== 1 ? 's' : ''} selected
-          </div>
-        )}
-      </div>
-
-      {/* Submit Button */}
-      <div className="absolute left-[550px] top-[555px]">
-        <button
-          onClick={createPost}
-          disabled={isLoading}
-          className="bg-[#a2ff9c] hover:bg-[#8ef087] disabled:opacity-50 disabled:cursor-not-allowed px-6 py-3 rounded-lg border border-black font-['Inter'] text-[16px] text-black transition-colors duration-200 cursor-pointer"
+    <>
+      <head>
+        <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+      </head>
+      <div className="bg-[#ffffff] relative w-full h-screen overflow-hidden" data-name="MacBook Pro 16' - 3">
+        <Group5 />
+        <Group10 />
+        
+        {/* Purple Background Section with Text and Image */}
+        <div 
+          className="absolute left-0 top-[95px] w-full h-[371px] overflow-hidden" 
+          style={{ backgroundColor: '#EB96F1' }}
         >
-          {isLoading ? 'Creating Post...' : 'Create Post'}
-        </button>
+          <div className="relative w-full h-full">
+            <div className="absolute left-[50px] top-1/2 transform -translate-y-1/2 max-w-[500px] z-10">
+              <h2 className="font-['Instrument_Serif'] text-5xl leading-tight text-black">
+                Create your post.<br />
+                Share Indian art with the world.
+              </h2>
+            </div>
+            <div className="absolute right-[20px] top-1/2 transform -translate-y-1/2 z-0">
+              <img 
+                src="/right.svg" 
+                alt="Decoration" 
+                className="h-[300px] w-auto"
+                onLoad={() => console.log('Image loaded successfully')}
+                onError={(e) => console.error('Image failed to load:', e)}
+              />
+            </div>
+          </div>
+        </div>
+        
+        <div className="absolute font-['Inter'] font-normal text-[#000000] text-[28px] left-[52px] top-[485px]">
+          <p>Create a Post</p>
+        </div>
+
+        {/* Email Input */}
+        <div className="absolute contents left-[52px] top-[535px]">
+          <div className="absolute bg-[#f4f3f3] h-[45px] left-[52px] rounded-[5px] top-[535px] w-[900px]">
+            <div aria-hidden="true" className="absolute border border-[#000000] border-solid inset-0 pointer-events-none rounded-[5px]" />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              placeholder="Email (Creator)"
+              className="absolute bg-transparent h-full w-full px-4 font-['Inter'] font-normal text-[18px] text-[#000000] outline-none rounded-[5px] placeholder:text-[#666666]"
+            />
+          </div>
+        </div>
+
+        {/* Title Input */}
+        <div className="absolute contents left-[52px] top-[590px]">
+          <div className="absolute bg-[#f4f3f3] h-[45px] left-[52px] rounded-[5px] top-[590px] w-[900px]">
+            <div aria-hidden="true" className="absolute border border-[#000000] border-solid inset-0 pointer-events-none rounded-[5px]" />
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleInputChange}
+              placeholder="Title"
+              className="absolute bg-transparent h-full w-full px-4 font-['Inter'] font-normal text-[18px] text-[#000000] outline-none rounded-[5px] placeholder:text-[#666666]"
+            />
+          </div>
+        </div>
+
+        {/* Description Textarea */}
+        <div className="absolute contents left-[52px] top-[645px]">
+          <div className="absolute bg-[#f4f3f3] h-[80px] left-[52px] rounded-[5px] top-[645px] w-[900px]">
+            <div aria-hidden="true" className="absolute border border-[#000000] border-solid inset-0 pointer-events-none rounded-[5px]" />
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              placeholder="Description"
+              className="absolute bg-transparent h-full w-full p-4 font-['Inter'] font-normal text-[18px] text-[#000000] outline-none rounded-[5px] resize-none placeholder:text-[#666666]"
+            />
+          </div>
+        </div>
+
+        {/* Tags Input */}
+        <div className="absolute contents left-[52px] top-[735px]">
+          <div className="absolute bg-[#f4f3f3] h-[45px] left-[52px] rounded-[5px] top-[735px] w-[900px]">
+            <div aria-hidden="true" className="absolute border border-[#000000] border-solid inset-0 pointer-events-none rounded-[5px]" />
+            <input
+              type="text"
+              name="tags"
+              value={formData.tags}
+              onChange={handleInputChange}
+              placeholder="Tags (comma separated)"
+              className="absolute bg-transparent h-full w-full px-4 font-['Inter'] font-normal text-[18px] text-[#000000] outline-none rounded-[5px] placeholder:text-[#666666]"
+            />
+          </div>
+        </div>
+
+        {/* Upload Section */}
+        <div className="absolute bg-[#ffffff] h-[180px] left-[52px] top-[790px] w-[450px]">
+          <div aria-hidden="true" className="absolute border border-[#000000] border-dashed inset-[-0.5px] pointer-events-none" />
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleFileChange}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+          />
+          <div className="absolute bg-[#f4f3f3] h-28 left-[25px] top-[28px] w-[400px]">
+            <div aria-hidden="true" className="absolute border border-[#000000] border-solid inset-0 pointer-events-none" />
+          </div>
+          <div className="absolute font-['Inter'] font-normal leading-[0] left-[225px] not-italic text-[#444444] text-[16px] text-center top-[6px] translate-x-[-50%]">
+            <p className="leading-[normal]">Uploads</p>
+          </div>
+          <div className="absolute font-['Inter'] font-normal leading-[0] left-[225px] not-italic text-[#000000] text-[50px] text-center text-nowrap top-[50px] translate-x-[-50%]">
+            <p className="leading-[normal] whitespace-pre">+</p>
+          </div>
+          {images && (
+            <div className="absolute bottom-2 left-2 right-2 text-xs text-gray-600 font-['Inter']">
+              {images.length} file{images.length !== 1 ? 's' : ''} selected
+            </div>
+          )}
+        </div>
+
+        {/* Submit Button */}
+        <div className="absolute left-[550px] top-[855px]">
+          <button
+            onClick={createPost}
+            disabled={isLoading}
+            className="bg-[#EB96F1] hover:bg-[#e085ed] disabled:opacity-50 disabled:cursor-not-allowed px-6 py-3 rounded-lg border border-black font-['Inter'] text-[16px] text-black transition-colors duration-200 cursor-pointer"
+            style={{ backgroundColor: '#EB96F1' }}
+          >
+            {isLoading ? 'Creating Post...' : 'Create Post'}
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

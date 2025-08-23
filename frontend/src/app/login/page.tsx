@@ -239,9 +239,6 @@ function AuthPageContent() {
               className="text-green-600"
             />
           </div>
-          
-          <h1 className={`${bricolage.className} text-[70px] font-medium text-green-600 mb-6`}>Hatch</h1>
-
         </div>
 
         {/* Toggle Switch */}

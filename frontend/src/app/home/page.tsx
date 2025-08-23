@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 
@@ -137,7 +137,11 @@ export default function App() {
   const minHeight = 789 + (totalRows * 719) + 663; // Start position + (rows * spacing) + card height
 
   return (
-    <div className="bg-white relative w-full" style={{ minHeight: `${Math.max(minHeight, 1500)}px` }}>
+    <>
+      <head>
+        <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+      </head>
+      <div className="bg-white relative w-full" style={{ minHeight: `${Math.max(minHeight, 1500)}px` }}>
       {/* Header */}
       <div className="absolute left-[25px] top-[31px] flex items-center">
         {/* Logo SVG */}
@@ -155,7 +159,7 @@ export default function App() {
       <div className="absolute right-[73px] top-[42px]">
         <button 
           onClick={() => router.push('/post')}
-          className="h-[52px] w-[153px] rounded-[25px] border-[3px] border-black flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
+          className="h-[42px] w-[120px] rounded-[25px] border-[2px] border-black flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
         >
           <span className="font-sans text-[25px] text-black">+ Create</span>
         </button>
@@ -164,6 +168,7 @@ export default function App() {
       {/* Profile Icon */}
       <div className="absolute right-[25px] top-[45px]">
         <div className="w-[42.5px] h-[42.5px]">
+          <a href="/profile" className="block w-[42.5px] h-[42.5px]">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 43 43">
             <g>
               <circle cx="21.25" cy="21.25" r="20.5" stroke="#B50000" strokeWidth="1.5" />
@@ -171,25 +176,48 @@ export default function App() {
               <path d="M12.6801 23.2186L30.7224 22.0507L22.6028 36.5616L12.6801 23.2186Z" stroke="#B50000" />
             </g>
           </svg>
+          </a>
         </div>
       </div>
       
       {/* Green Background Section */}
       <div 
-        className="absolute left-0 top-[133px] w-full h-[371px]" 
+        className="absolute left-0 top-[133px] w-full h-[371px] overflow-hidden" 
         style={{ backgroundColor: '#A2FF9C' }}
-      />
-      
-      {/* Navigation */}
-      <div className="absolute top-[529px] left-1/2 transform -translate-x-1/2 flex items-center space-x-8">
+        >
+        <div className="relative w-full h-full">
+            {/* Left Text */}
+            <div className="absolute left-[50px] top-1/2 transform -translate-y-1/2 max-w-[500px] z-10">
+            <h2 className="font-['Instrument_Serif'] text-5xl leading-tight text-black">
+                Discover art from community<br />
+                artists all over India.
+            </h2>
+            </div>
+
+            {/* Right SVG */}
+            <div className="absolute right-[20px] top-1/2 transform -translate-y-[30%] z-0">
+            <img 
+                src="/right.svg" 
+                alt="Decoration" 
+                className="h-[900px] w-auto"
+                onLoad={() => console.log('Image loaded successfully')}
+                onError={(e) => console.error('Image failed to load:', e)}
+            />
+            </div>
+        </div>
+        </div>
+
+        {/* Navigation */}
+        <div className="absolute top-[529px] left-1/2 transform -translate-x-1/2 flex items-center space-x-8">
         <div className="font-sans text-[25px] text-black relative">
-          <p className="leading-normal">Discover</p>
-          <div className="absolute -bottom-2 left-0 right-0 h-[3px] bg-[#B50000]" />
+            <p className="leading-normal">Discover</p>
+            <div className="absolute -bottom-2 left-0 right-0 h-[3px] bg-[#B50000]" />
         </div>
         <div className="font-sans text-[25px] text-black">
-          <p className="leading-normal">Explore</p>
+            <p className="leading-normal">Explore</p>
         </div>
-      </div>
+        </div>
+
       
       {/* Search Bar */}
       <div className="absolute top-[605px] left-1/2 transform -translate-x-1/2 w-[839px] h-[50px] rounded-[25px] border border-black flex items-center px-4">
@@ -238,5 +266,6 @@ export default function App() {
         <PostCard key={post._id} post={post} index={index} />
       ))}
     </div>
+    </>
   );
 }
