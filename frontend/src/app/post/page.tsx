@@ -25,17 +25,9 @@ function Group3() {
 
 function Logo() {
   return (
-    <div className="absolute top-0 left-[25px] h-[120px] flex items-center">
-      <div className="w-[75px] h-[64px] mr-4">
-        <img src="/left.svg" alt="Kalarasa Logo" className="block size-full" />
-      </div>
-
-      {/* Kalarasa Text */}
-      <div className="font-sans text-[33.75px] text-black">
-        <p className="leading-normal">Kalarasa</p>
-      </div>
+    <div className="absolute top-0 left-[25px] h-[120px] w-[140px]">
+      <img src="/logo.svg" alt="Kalarasa Logo" className="block size-full" />
     </div>
-
   );
 }
 
@@ -50,7 +42,7 @@ function Group5() {
 
 function Group10() {
   return (
-    <div className="absolute left-[1624px] size-[42.5px] top-[45px]">
+    <div className="absolute right-[25px] size-[42.5px] top-[45px]">
       <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 43 43">
         <g id="Group 10">
           <circle cx="21.25" cy="21.25" id="Ellipse 5" r="20.5" stroke="#B50000" strokeWidth="1.5" />
