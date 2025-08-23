@@ -1,162 +1,142 @@
-"use client"
-import { useState, useEffect } from 'react';
-import { User, Edit2, Save, X, Phone, Mail, MapPin } from 'lucide-react';
+"use client";
+import { useState, useEffect } from "react";
+import { User, Edit2, Save, X, Phone, Mail, MapPin } from "lucide-react";
 import Image from "next/image";
 
-// TODO: Replace with your actual API base URL
-const API_BASE_URL = 'https://thecodeworks.in/kala';
-
-// TODO: This is a dummy profile data structure
-// When integrating with real backend, this should match your API response format
-const DUMMY_PROFILE_DATA = {
-  email: 'user@example.com',
-  first_name: 'Arjun',
-  last_name: 'Sharma',
-  phone: '+91 9876543210',
-  age: '28',
-  state: 'Karnataka',
-  address: '123 MG Road, Bengaluru, Karnataka 560001'
-};
+const API_BASE_URL = "https://thecodeworks.in/kalarasa";
 
 function ProfilePage() {
-  // State management for profile data
-  const [profileData, setProfileData] = useState(DUMMY_PROFILE_DATA);
+  const [profileData, setProfileData] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [editedData, setEditedData] = useState(DUMMY_PROFILE_DATA);
+  const [editedData, setEditedData] = useState<any>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [saveSuccess, setSaveSuccess] = useState(false);
 
-  // TODO: Replace this with actual API call to fetch user profile
-  // Expected API endpoint: GET /api/get_profile
-  // Expected response format: { email, first_name, last_name, phone, age, state, address }
+  // Get logged-in user email from localStorage
+  const getUserEmail = () => {
+    try {
+      const userStr = localStorage.getItem("user");
+      if (!userStr) return null;
+      const user = JSON.parse(userStr);
+      return user.email || null;
+    } catch {
+      return null;
+    }
+  };
+
+  // Fetch profile data
   const fetchProfileData = async () => {
     setIsLoading(true);
-    setError('');
-    
+    setError("");
+
+    const email = getUserEmail();
+    if (!email) {
+      setError("User not logged in");
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      // TODO: Uncomment and modify when real API is ready
-      /*
-      const response = await fetch(`${API_BASE_URL}/api/get_profile`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // For session-based auth
+      const response = await fetch(`${API_BASE_URL}/get_profile`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch profile data');
+      const data = await response.json();
+
+      if (!response.ok || data.error) {
+        throw new Error(data.error || "Failed to fetch profile");
       }
 
-      const data = await response.json();
-      setProfileData(data);
-      setEditedData(data);
-      */
-      
-      // Using dummy data for now
-      setTimeout(() => {
-        setProfileData(DUMMY_PROFILE_DATA);
-        setEditedData(DUMMY_PROFILE_DATA);
-        setIsLoading(false);
-      }, 1000);
-      
-    } catch (error) {
-      console.error('Error fetching profile:', error);
-      setError('Failed to load profile data');
+      setProfileData(data.user);
+      setEditedData(data.user);
+    } catch (err: any) {
+      console.error("Error fetching profile:", err);
+      setError(err.message || "Failed to load profile data");
+    } finally {
       setIsLoading(false);
     }
   };
 
-  // TODO: Replace this with actual API call to update user profile
-  // Expected API endpoint: POST/PUT /api/update_profile
-  // Expected request body: { first_name, last_name, phone, age, state, address }
+  // Update profile data
   const updateProfileData = async () => {
     setIsLoading(true);
-    setError('');
+    setError("");
     setSaveSuccess(false);
-    
+
+    const email = getUserEmail();
+    if (!email) {
+      setError("User not logged in");
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      // TODO: Uncomment and modify when real API is ready
-      /*
-      const response = await fetch(`${API_BASE_URL}/api/update_profile`, {
-        method: 'POST', // or 'PUT' depending on your API design
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // For session-based auth
+      const response = await fetch(`${API_BASE_URL}/update_profile`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          email,
           first_name: editedData.first_name,
           last_name: editedData.last_name,
           phone: editedData.phone,
           age: editedData.age,
           state: editedData.state,
-          address: editedData.address
+          address: editedData.address,
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to update profile');
+      const data = await response.json();
+
+      if (!response.ok || data.error) {
+        throw new Error(data.error || "Failed to update profile");
       }
 
-      const updatedData = await response.json();
-      */
-      
-      // Simulating API call with dummy data
-      setTimeout(() => {
-        setProfileData(editedData);
-        setIsEditing(false);
-        setSaveSuccess(true);
-        setIsLoading(false);
-        
-        // Hide success message after 3 seconds
-        setTimeout(() => setSaveSuccess(false), 3000);
-      }, 1000);
-      
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      setError('Failed to update profile');
+      setProfileData(editedData);
+      setIsEditing(false);
+      setSaveSuccess(true);
+
+      setTimeout(() => setSaveSuccess(false), 3000);
+    } catch (err: any) {
+      console.error("Error updating profile:", err);
+      setError(err.message || "Failed to update profile");
+    } finally {
       setIsLoading(false);
     }
   };
 
-  // Load profile data on component mount
   useEffect(() => {
     fetchProfileData();
   }, []);
 
-  // Handle input changes in edit mode
-  const handleInputChange = (field: keyof typeof profileData, value: string) => {
-    setEditedData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+  const handleInputChange = (field: keyof typeof editedData, value: string) => {
+    setEditedData((prev: any) => ({ ...prev, [field]: value }));
   };
 
-  // Cancel editing and revert changes
   const handleCancelEdit = () => {
     setEditedData(profileData);
     setIsEditing(false);
-    setError('');
+    setError("");
   };
 
-  // Save changes
   const handleSaveChanges = () => {
-    // Basic validation
-    if (!editedData.first_name.trim() || !editedData.last_name.trim()) {
-      setError('First name and last name are required');
+    if (!editedData.first_name?.trim() || !editedData.last_name?.trim()) {
+      setError("First name and last name are required");
       return;
     }
-    
-    if (editedData.phone && !/^\+?\d{10,15}$/.test(editedData.phone.replace(/\s/g, ''))) {
-      setError('Please enter a valid phone number');
+    if (
+      editedData.phone &&
+      !/^\+?\d{10,15}$/.test(editedData.phone.replace(/\s/g, ""))
+    ) {
+      setError("Please enter a valid phone number");
       return;
     }
-    
     updateProfileData();
   };
 
-  if (isLoading && !profileData.email) {
+  if (isLoading && !profileData) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-yellow-200 via-yellow-100 to-green-100 flex items-center justify-center">
         <div className="flex items-center gap-3">
@@ -166,7 +146,13 @@ function ProfilePage() {
       </div>
     );
   }
-
+  if (!profileData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-gray-600">
+        No profile data found
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-200 via-yellow-100 to-green-100" style={{ backgroundColor: "#ECFF72" }}>
       {/* Header */}

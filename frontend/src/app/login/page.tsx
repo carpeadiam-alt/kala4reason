@@ -25,7 +25,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-const API_BASE_URL = 'https://thecodeworks.in/kala';
+const API_BASE_URL = 'https://thecodeworks.in/kalarasa';
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
